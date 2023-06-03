@@ -1,3 +1,72 @@
+// Called the instance the element is dragged.
+
+b4StartDrag : function() {
+
+    // Cache the drag element
+
+    if (!this.el) {
+
+        this.el = Ext.get(this.getEl());
+
+    }
+
+    //Cache the original XY Coordinates of the element, we'll use this later.
+
+    this.originalXY = this.el.getXY();
+
+},
+
+// Called when element is dropped not anything other than a dropzone with the same ddgroup
+
+onInvalidDrop : function() {
+
+    // Set a flag to invoke the animated repair
+
+    this.invalidDrop = true;
+
+},
+
+// Called when the drag operation completes
+
+endDrag : function() {
+
+    // Invoke the animation if the invalidDrop flag is set to true
+
+    if (this.invalidDrop === true) {
+
+        // Remove the drop invitation
+
+        this.el.removeClass('dropOK');
+
+        // Create the animation configuration object
+
+        var animCfgObj = {
+
+            easing   : 'elasticOut',
+
+            duration : 1,
+
+            scope    : this,
+
+            callback : function() {
+
+                // Remove the position attribute
+
+                this.el.dom.style.position = '';
+
+            }
+
+        };
+
+        // Apply the repair animation
+
+        this.el.moveTo(this.originalXY[0], this.originalXY[1], animCfgObj);
+
+        delete this.invalidDrop;
+
+    }
+
+},
 This is a Telegram Bot written in Python for mirroring files on the Internet to your Google Drive or Telegram. Based on [python-aria-mirror-bot](https://github.com/lzzy12/python-aria-mirror-bot)
 
 # Features:
